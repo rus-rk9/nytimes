@@ -1,28 +1,18 @@
-///обертка над интерфейсом запросов
+///wrapper over the request interface
 
-import 'package:flutter/material.dart';
 import 'package:nytimes/bloc/services/api.dart';
-import 'package:nytimes/models/repo.dart';
+import 'package:nytimes/models/ribbon_item.dart';
 
 class AppRepository {
   ApiProvider api = ApiProvider();
 
-  ///получение репозиториев
-  Future<List<Repo>> getRepos({
-    @required String searchValue,
-    @required String currentLocale,
-  }) async {
-    if (currentLocale != "") {
-      List<dynamic> result = await api.getRepoList(searchValue: searchValue);
-      if (result != null) {
-        return result
-            .map((json) => Repo.fromJSON(json, currentLocale))
-            .toList();
-      } else {
-        print("api.getRepoList returned null");
-      }
+  ///getting ribbon data
+  Future<List<RibbonItem>> getRibbonItems() async {
+    List<dynamic> result = await api.getRibbonItemList();
+    if (result != null) {
+      return result.map((json) => RibbonItem.fromJSON(json)).toList();
     } else {
-      print("error: locale have not got yet");
+      print("api.getRibbonItems returned null");
     }
     return null;
   }

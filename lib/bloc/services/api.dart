@@ -1,27 +1,25 @@
-///интерфейс запросов
+///queries interface
 
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider {
-  ///получение репозиториев по строке
-  Future<List<dynamic>> getRepoList({
-    @required String searchValue,
-  }) async {
+  ///get items for the ribbon
+  Future<List<dynamic>> getRibbonItemList() async {
     try {
       final response = await http.get(
-        'https://api.github.com/search/repositories?q=$searchValue&sort=stars&order=desc&per_page=38',
+        'https://api.nytimes.com/svc/topstories/v2/home.json?api-key=A2GYvJg5WAHHNf76pIzpNlzYFpFwDjfq',
       );
 
       if (response.statusCode == 200) {
-        return (json.decode(response.body))['items'];
+        return (json.decode(
+          response.body,
+        ))['results'];
       } else {
-        print("error: fetching from github ..., ${response.statusCode}");
+        print("error: fetching from nytimes ..., ${response.statusCode}");
       }
     } catch (e) {
-      print("error: getRepoList ..., ${e.toString()}");
+      print("error: getRibbonItemList ..., ${e.toString()}");
     }
     return null;
   }

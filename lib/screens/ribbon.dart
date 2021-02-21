@@ -1,16 +1,20 @@
-///экран результатов
+///ribbon
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nytimes/bloc/logic.dart';
 import 'package:nytimes/bloc/states.dart';
+import 'package:nytimes/bloc/events.dart';
 import 'package:nytimes/screens/widgets/my_card.dart';
+import 'package:nytimes/screens/widgets/my_text.dart';
 
 class Ribbon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: MyBody(),
+      body: SafeArea(
+        child: MyBody(),
+      ),
     );
     // );
   }
@@ -21,23 +25,39 @@ class MyBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppStates>(
       builder: (context, state) {
-        if (state is RepoLoadedState) {
-          return Column(
+        Widget result = MyText(text: 'Pull down to refresh ...');
+
+        if (state is StateRibbonItemEmpty) {
+          result = MyText(text: 'No data found. Pull down to refresh ...');
+        }
+
+        if (state is StateRibbonItemError) {
+          result = MyText(text: 'Unknown error. Pull down to refresh ...');
+        }
+
+        if (state is StateRibbonItemLoading) {
+          result = Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is StateRibbonItemLoaded) {
+          result = Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: state.repos.length,
+                  itemCount: state.items.length,
                   itemBuilder: (context, i) {
                     return MyCard(
-                      title: state.repos[i].name,
-                      abstr: state.repos[i].name,
-                      username: state.repos[i].userName,
-                      avatar: state.repos[i].avaURL,
-                      published: state.repos[i].dt,
-                      updated: state.repos[i].dt,
+                      title: state.items[i].title,
+                      abstr: state.items[i].abstr,
+                      username: state.items[i].username,
+                      avatar: state.items[i].avatar,
+                      published: state.items[i].published,
+                      updated: state.items[i].updated,
                     );
                   },
                 ),
@@ -45,31 +65,14 @@ class MyBody extends StatelessWidget {
             ],
           );
         }
-        return Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: [
-                    MyCard(
-                      title:
-                          'Republicans Struggle to Derail Increasingly Popular Stimulus Package',
-                      abstr:
-                          'Polls show a \$1.9 trillion rescue plan polls strongly across the country, including with many Republican voters, despite a scattershot series of attacks from congressional Republicans.',
-                      username: 'By Emily Cochrane and Jim Tankersley',
-                      avatar:
-                          'https://static01.nyt.com/images/2021/02/19/us/19dc-stimulus/19dc-stimulus-thumbStandard.jpg',
-                      published: '2021-02-19T17:55:48-05:00',
-                      updated: '2021-02-19T21:39:51-05:00',
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+
+        return RefreshIndicator(
+          onRefresh: () async {
+            BlocProvider.of<AppBloc>(context).add(
+              EventRibbonItemsGet(),
+            );
+          },
+          child: result,
         );
       },
     );

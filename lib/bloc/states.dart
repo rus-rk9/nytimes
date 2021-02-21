@@ -1,21 +1,19 @@
-///стейты
+///states
 import 'package:flutter/foundation.dart';
-import 'package:nytimes/models/repo.dart';
+import 'package:nytimes/models/ribbon_item.dart';
 
 abstract class AppStates {}
 
-class RepoErrorState extends AppStates {}
+class StateRibbonItemError extends AppStates {}
 
-class RepoEmptyState extends AppStates {}
+class StateRibbonItemEmpty extends AppStates {}
 
-class RepoLoadingState extends AppStates {}
+class StateRibbonItemLoading extends AppStates {}
 
-class RepoLoadedState extends AppStates {
-  String searchValue;
-  List<Repo> repos;
+class StateRibbonItemLoaded extends AppStates {
+  List<RibbonItem> items;
 
-  RepoLoadedState({
-    @required this.searchValue,
-    @required this.repos,
-  }) : assert(repos != null);
+  StateRibbonItemLoaded({
+    @required this.items,
+  }) : assert(items != null);
 }

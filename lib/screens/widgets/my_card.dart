@@ -1,4 +1,4 @@
-///карточка
+///ribbon item
 import 'package:flutter/material.dart';
 
 class MyCard extends Container {
@@ -46,7 +46,8 @@ class MyCard extends Container {
                     child: Container(
                       height: 75,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
                             child: Text(
