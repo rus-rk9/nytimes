@@ -1,61 +1,108 @@
 ///карточка
 import 'package:flutter/material.dart';
-import 'package:nytimes/screens/widgets/my_card_caption.dart';
-import 'my_rate.dart';
-import 'my_status.dart';
 
 class MyCard extends Container {
   MyCard({
-    @required String repCaption,
-    @required String username,
+    @required String title,
+    @required String abstr,
     @required String avatar,
-    @required Color borderColor,
-    @required Color backgroundColor,
-    @required int rate,
-    @required String date,
+    @required String username,
+    @required String published,
+    @required String updated,
   }) : super(
-          height: 111,
-          margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-          padding: EdgeInsets.only(left: 16, top: 12, right: 16, bottom: 16),
+          margin: EdgeInsets.only(left: 8, right: 8, bottom: 4, top: 4),
+          padding: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(
-              color: borderColor,
+              color: Colors.grey,
               style: BorderStyle.solid,
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyCardCaption(
-                    repCaption: repCaption,
-                    username: username,
-                    ava: avatar,
-                  ),
-                  Column(
-                    children: [
-                      MyRate(
-                        val: rate,
-                        backgroundColor: backgroundColor,
+                  Container(
+                    width: 75,
+                    height: 75,
+                    margin: EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(avatar),
                       ),
-                    ],
-                  )
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(
+                      height: 75,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              title,
+                              softWrap: true,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              abstr,
+                              softWrap: true,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Container(
                 height: 1,
-                color: borderColor,
+                color: Colors.grey,
+                margin: EdgeInsets.only(
+                  top: 8,
+                  bottom: 8,
+                ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 12),
-                child: MyStatus(
-                  when: date,
-                  greyColor: backgroundColor,
+              Text(
+                username,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                'Published $published    Updated $updated',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Colors.grey,
                 ),
               ),
             ],
