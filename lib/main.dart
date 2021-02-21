@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nytimes/screens/results.dart';
-import 'screens/search.dart';
+import 'package:nytimes/screens/ribbon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nytimes/bloc/logic.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -26,8 +25,7 @@ class SearchApp extends StatelessWidget {
         navigatorKey: _navigatorKey,
         initialRoute: '/',
         routes: {
-          '/': (context) => Search(),
-          '/results': (context) => Results(),
+          '/': (context) => Ribbon(),
         },
       ),
     );
