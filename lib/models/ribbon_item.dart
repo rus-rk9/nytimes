@@ -8,6 +8,7 @@ class RibbonItem {
   String username;
   String published;
   String updated;
+  String url;
 
   RibbonItem({
     this.title,
@@ -16,27 +17,54 @@ class RibbonItem {
     this.username,
     this.published,
     this.updated,
+    this.url,
   });
 
   ///convert results to object
   factory RibbonItem.fromJSON(Map<String, dynamic> json) {
-    print(json['title']);
+    String _avaURL;
+
+    try {
+      _avaURL = json['multimedia'][1]['url'];
+    } catch (_) {
+      _avaURL = null;
+    }
+
     return RibbonItem(
-      title: json['title']
-          .toString()
-          //not sure, is it right way to escape characters, but didn't found another way yet, to-do!
-          .replaceAll('â', '\'')
-          .replaceAll('â', '‘')
-          .replaceAll('â', '’'),
-      abstr: json['abstract'],
-      avatar: json['multimedia'][1]['url'],
-      username: json['byline'],
-      published: DateFormat('MMM d, y').format(
-        DateTime.parse(json['published_date']),
-      ),
-      updated: DateFormat('MMM d, y').format(
-        DateTime.parse(json['updated_date']),
-      ),
+      title: (json.containsKey('title'))
+          ? escapeCharacters(json['title'].toString())
+          : null,
+      abstr: (json.containsKey('abstract'))
+          ? escapeCharacters(json['abstract'].toString())
+          : null,
+      avatar: _avaURL,
+      username: (json.containsKey('byline'))
+          ? escapeCharacters(json['byline'].toString())
+          : null,
+      published: (json.containsKey('published_date'))
+          ? 'Published ' +
+              DateFormat('MMM d, y').format(
+                DateTime.parse(json['published_date']),
+              )
+          : null,
+      updated: (json.containsKey('updated_date'))
+          ? 'Updated ' +
+              DateFormat('MMM d, y').format(
+                DateTime.parse(json['updated_date']),
+              )
+          : null,
+      url: json['url'],
     );
+  }
+
+  static String escapeCharacters(String str) {
+    //not sure, this is right way to escape characters, but didn't found another way yet, to-do!
+    return str
+        .replaceAll('â', '\'')
+        .replaceAll('â', '‘')
+        .replaceAll('â¦', '...')
+        .replaceAll('Ã©', 'é')
+        .replaceAll('Ã³', 'ó')
+        .replaceAll('â', '’');
   }
 }

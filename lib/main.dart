@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nytimes/screens/ribbon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nytimes/bloc/logic.dart';
-
 import 'bloc/events.dart';
 
 void main() {

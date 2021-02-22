@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nytimes/bloc/logic.dart';
 import 'package:nytimes/bloc/states.dart';
 import 'package:nytimes/bloc/events.dart';
+import 'package:nytimes/screens/widgets/my_app_bar.dart';
 import 'package:nytimes/screens/widgets/my_card.dart';
 import 'package:nytimes/screens/widgets/my_text.dart';
 
@@ -15,6 +16,7 @@ class Ribbon extends StatelessWidget {
       body: SafeArea(
         child: MyBody(),
       ),
+      appBar: MyAppBar(),
     );
     // );
   }
@@ -58,6 +60,7 @@ class MyBody extends StatelessWidget {
                       avatar: state.items[i].avatar,
                       published: state.items[i].published,
                       updated: state.items[i].updated,
+                      url: state.items[i].url,
                     );
                   },
                 ),

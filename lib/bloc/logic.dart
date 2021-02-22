@@ -32,7 +32,7 @@ class AppBloc extends Bloc<AppEvents, AppStates> {
           yield StateRibbonItemEmpty();
         }
       } catch (e) {
-        print("error: ${e.toString()}");
+        print("mapEventToState error: ${e.toString()}");
         yield StateRibbonItemError();
       }
     }
